@@ -32,11 +32,11 @@ public class Formular {
     }
 
     public String getADouaMaterie() {
-        return aDouadMaterie;
+        return aDouaMaterie;
     }
 
-    public void setADouaMaterie(String aDouadMaterie) {
-        this.aDouadMaterie = aDouadMaterie;
+    public void setADouaMaterie(String aDouaMaterie) {
+        this.aDouaMaterie = aDouaMaterie;
     }
 
     public String getNumeLicenta() {

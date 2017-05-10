@@ -1,0 +1,84 @@
+{{velocity}}
+
+#macro( select $name $displayname $choicelist )
+  <SELECT name=$name>
+    <option value="">$displayname</option>
+    #foreach( $choice in $choicelist )
+      <option value=$choice>$choice</option>
+    #end
+  </select>
+#end
+
+#if("$!request.nume" != '')
+  ## Request for creating a new instance
+  #set($targetDocReference = $services.model.createDocumentReference('', $!{request.spaceName}, $!{request.nume}))
+  $response.sendRedirect($xwiki.getURL($targetDocReference, 'inline', "template=${escapetool.url($request.template)}&parent=${escapetool.url($request.parent)}"))
+  ## Stop processing, since we already sent a redirect.
+  #stop
+#end
+
+#if ($isSuperAdmin)
+ ## This will only be visible to users that have super admin rights on this document
+ = Formular de inscriere =
+ {{html}}
+   <table border = "0">
+     <tr>
+       <td>Nume</td>
+       <td>$user.getNume()</td>
+     </tr>
+     <tr>
+       <td>Prenume</td>
+       <td>$user.getPrenume()</td>
+     </tr>
+     <tr>
+       <td>Nr. matricol</td>
+       <td>$user.getNrMatricol()</td>
+     </tr>
+   </table>
+ {{/html}}
+
+#elseif ($isGuest)
+ ## This will only be visible to students
+ = Formular de inscriere =
+ {{html}}
+ <form action="" id="newdoc" method="post">
+  <div>
+   <table>
+    <div>
+     <tr>
+      <td>Nume</td>
+      <td><input type="text" name="nume" placeholder="Va rugam scrieti numele de familie" class="txtbox" size="100%" required /></td>
+     </tr>
+     <tr>
+      <td>Prenume</td>
+      <td><input type="text" name="prenume" placeholder="Va rugam scrieti prenumele complet" class="txtbox" size="100%" required /></td>
+     </tr>
+     <tr>
+      <td>Nr. matricol</td>
+      <td><input type="text" name="nrMatricol" placeholder="Va rugam scrieti numarul matricol" class="txtbox" size="100%" required /></td>
+     </tr>
+     <tr>
+      <td>Indrumator</td>
+      <td>#select( "indrumator" "Alex Moruz" $sizelist )</td>
+     </tr>
+    </div>
+    <span class="buttonwrapper"><input type="submit" value="trimite" class="button"/></span>
+   </table>
+  </div>
+ </form>
+ {{/html}}
+
+#else
+ ## This will only be visible if you are not a student or super admin
+ = Ne pare rau, nu aveti acces la aceasta pagina =
+#end
+
+#*
+  Daca a fost apasat butonul de submit
+
+  $user.setNume(...)
+  $user.setPreume(...)
+  $user.setNrMatricol(...)
+*#
+
+{{/velocity}}

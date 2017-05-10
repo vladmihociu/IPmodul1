@@ -59,7 +59,7 @@
      </tr>
      <tr>
       <td>Indrumator</td>
-      <td>#select( "indrumator" "Alex Moruz" $sizelist )</td>
+      <td>#select( "indrumator" "Alex Moruz" $profslist )</td>
      </tr>
     </div>
     <span class="buttonwrapper"><input type="submit" value="trimite" class="button"/></span>

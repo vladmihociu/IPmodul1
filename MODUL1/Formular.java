@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 public class Formular {
     private String indrumator;
     private String primaMaterie;
-    private String aDouadMaterie;
+    private String aDouaMaterie;
     private String numeLicenta;
     private String link;
     private String nume;
@@ -31,11 +31,11 @@ public class Formular {
         this.primaMaterie = primaMaterie;
     }
 
-    public String getADouadMaterie() {
+    public String getADouaMaterie() {
         return aDouadMaterie;
     }
 
-    public void setADouadMaterie(String aDouadMaterie) {
+    public void setADouaMaterie(String aDouadMaterie) {
         this.aDouadMaterie = aDouadMaterie;
     }
 

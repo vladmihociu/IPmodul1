@@ -42,7 +42,7 @@
      </tr>
      <tr>
       <td>Adeverinta</td>
-      <td><input type="file" name="adeverinta"></td>
+      <td><input type="file" name="adeverinta" required></td>
      </tr>
     </div>
     <span class="buttonwrapper"><input type="submit" value="trimite" class="button"/></span>

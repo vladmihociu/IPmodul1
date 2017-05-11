@@ -1,0 +1,62 @@
+{{velocity}}
+
+#macro( select $name $displayname $choicelist )
+  <SELECT name=$name>
+    <option value="">$displayname</option>
+    #foreach( $choice in $choicelist )
+      <option value=$choice>$choice</option>
+    #end
+  </select>
+#end
+
+#if("$!request.nume" != '')
+  ## Request for creating a new instance
+  #set($targetDocReference = $services.model.createDocumentReference('', $!{request.spaceName}, $!{request.nume}))
+  $response.sendRedirect($xwiki.getURL($targetDocReference, 'inline', "template=${escapetool.url($request.template)}&parent=${escapetool.url($request.parent)}"))
+  ## Stop processing, since we already sent a redirect.
+  #stop
+#end
+
+## This will only be visible to students
+ = Formular de inscriere =
+ {{html}}
+ <form action="" id="newdoc" method="post">
+  <div>
+   <table>
+    <div>
+     <tr>
+      <td>Nume</td>
+      <td><input type="text" name="nume" placeholder="Va rugam scrieti numele de familie" class="txtbox" size="100%" required /></td>
+     </tr>
+     <tr>
+      <td>Prenume</td>
+      <td><input type="text" name="prenume" placeholder="Va rugam scrieti prenumele complet" class="txtbox" size="100%" required /></td>
+     </tr>
+     <tr>
+      <td>Nr. matricol</td>
+      <td><input type="text" name="nrMatricol" placeholder="Va rugam scrieti numarul matricol" class="txtbox" size="100%" required /></td>
+     </tr>
+     <tr>
+      <td>Indrumator</td>
+      <td>#select( "indrumator" "Alex Moruz" $profslist )</td>
+     </tr>
+     <tr>
+      <td>Adeverinta</td>
+      <td><input type="file" name="adeverinta"></td>
+     </tr>
+    </div>
+    <span class="buttonwrapper"><input type="submit" value="trimite" class="button"/></span>
+   </table>
+  </div>
+ </form>
+{{/html}}
+
+#*
+  Daca a fost apasat butonul de submit
+
+  $user.setNume(...)
+  $user.setPreume(...)
+  $user.setNrMatricol(...)
+*#
+
+{{/velocity}}

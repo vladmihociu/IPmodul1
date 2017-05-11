@@ -1,0 +1,31 @@
+{{velocity}}
+
+#macro( select $name $displayname $choicelist )
+  <SELECT name=$name>
+    <option value="">$displayname</option>
+    #foreach( $choice in $choicelist )
+      <option value=$choice>$choice</option>
+    #end
+  </select>
+#end
+
+#if("$!request.nume" != '')
+  ## Request for creating a new instance
+  #set($targetDocReference = $services.model.createDocumentReference('', $!{request.spaceName}, $!{request.nume}))
+  $response.sendRedirect($xwiki.getURL($targetDocReference, 'inline', "template=${escapetool.url($request.template)}&parent=${escapetool.url($request.parent)}"))
+  ## Stop processing, since we already sent a redirect.
+  #stop
+#end
+
+## This will only be visible if you are not a student or super admin
+= Ne pare rau, nu aveti acces la aceasta pagina =
+
+#*
+  Daca a fost apasat butonul de submit
+
+  $user.setNume(...)
+  $user.setPreume(...)
+  $user.setNrMatricol(...)
+*#
+
+{{/velocity}}

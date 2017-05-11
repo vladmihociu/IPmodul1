@@ -1,0 +1,47 @@
+{{velocity}}
+
+#macro( select $name $displayname $choicelist )
+  <SELECT name=$name>
+    <option value="">$displayname</option>
+    #foreach( $choice in $choicelist )
+      <option value=$choice>$choice</option>
+    #end
+  </select>
+#end
+
+#if("$!request.nume" != '')
+  ## Request for creating a new instance
+  #set($targetDocReference = $services.model.createDocumentReference('', $!{request.spaceName}, $!{request.nume}))
+  $response.sendRedirect($xwiki.getURL($targetDocReference, 'inline', "template=${escapetool.url($request.template)}&parent=${escapetool.url($request.parent)}"))
+  ## Stop processing, since we already sent a redirect.
+  #stop
+#end
+
+## This will only be visible to users that have super admin rights on this document
+ = Formular de inscriere =
+ {{html}}
+   <table border = "0">
+     <tr>
+       <td>Nume</td>
+       <td>$user.getNume()</td>
+     </tr>
+     <tr>
+       <td>Prenume</td>
+       <td>$user.getPrenume()</td>
+     </tr>
+     <tr>
+       <td>Nr. matricol</td>
+       <td>$user.getNrMatricol()</td>
+     </tr>
+   </table>
+{{/html}}
+
+#*
+  Daca a fost apasat butonul de submit
+
+  $user.setNume(...)
+  $user.setPreume(...)
+  $user.setNrMatricol(...)
+*#
+
+{{/velocity}}

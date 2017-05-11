@@ -61,6 +61,10 @@
       <td>Indrumator</td>
       <td>#select( "indrumator" "Alex Moruz" $profslist )</td>
      </tr>
+     <tr>
+      <td>Adeverinta</td>
+      <td><input type="file" name="adeverinta"></td>
+     </tr>
     </div>
     <span class="buttonwrapper"><input type="submit" value="trimite" class="button"/></span>
    </table>

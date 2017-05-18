@@ -17,39 +17,103 @@
   #stop
 #end
 
-## This will only be visible to students
- = Formular de inscriere =
+ ## This will only be visible to students
  {{html}}
+ <h1 style="text-align:center;"><b> Formular de inscriere </b></h1>
+ <br/>
+
  <form action="" id="newdoc" method="post">
   <div>
-   <table>
-    <div>
+    <table>
+      <div>
+        <tr>
+          <td>Nume</td>
+          <td><input type="text" name="nume" placeholder="Va rugam scrieti numele de familie" class="txtbox" size="110%" required /></td>
+        </tr>
+        <tr>
+          <td>Prenume</td>
+          <td><input type="text" name="prenume" placeholder="Va rugam scrieti prenumele complet" class="txtbox" size="110%" required /></td>
+        </tr>
+        <tr>
+          <td>Nr. matricol</td>
+          <td><input type="text" name="nrMatricol" placeholder="Va rugam scrieti numarul matricol" class="txtbox" size="110%" required /></td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td><input type="text" name="email" placeholder="Va rugam scrieti emailul (nu de la UAIC)" class="txtbox" size="110%" required /></td>
+        </tr>
+        <tr>
+          <td>Nume licenta</td>
+          <td><input type="text" name="numeLicenta" placeholder="Va rugam scrieti numele licentei" class="txtbox" size="110%" required /></td>
+        </tr>
+        <tr>
+          <td>Link extern catre cod</td>
+          <td><input type="text" name="link" placeholder="Va rugam scrieti link-ul extern catre codul sursa" class="txtbox" size="110%" required /></td>
+        </tr>
+        <tr>
+          <td>Indrumator</td>
+          <td>#select( "indrumator" "Alex Moruz" $profslist )</td>
+        </tr>
+        <tr>
+          <td>Prima materie</td>
+          <td>#select( "materie1" "Matematica" $materiilist )</td>
+        </tr>
+        <tr>
+          <td>A doua materie</td>
+          <td>#select( "materie2" "Fundamente algebrice in informatica" $materiilist )</td>
+        </tr>
+        <tr>
+            <td>Data examenului</td>
+            <td><label>Ziua:</label>
+                <select id="day" name="day">
+                   <script>
+                       for(var i = 1; i < 32; i++){
+                          document.write('<option value="'+i+'">'+i+'</option>');
+                       }
+                   </script>
+                 </select>
+                 <label>Luna:</label>
+                 <select id="month" name="month">
+                    <script>
+                       for(var i = 1; i <= 12; i++){
+                           document.write('<option value="'+i+'">'+i+'</option>');
+                       }
+                       </script>
+                 </select>
+                 <label>Anul:</label>
+                 <select id="year" name="year">
+                    <script>
+                        var myDate = new Date();
+                        var year = myDate.getFullYear();
+                        for(var i = year; i < year+5; i++){
+                            document.write('<option value="'+i+'">'+i+'</option>');
+                        }
+                    </script>
+                 </select>
+            </td>
+        </tr>
      <tr>
-      <td>Nume</td>
-      <td><input type="text" name="nume" placeholder="Va rugam scrieti numele de familie" class="txtbox" size="100%" required /></td>
-     </tr>
-     <tr>
-      <td>Prenume</td>
-      <td><input type="text" name="prenume" placeholder="Va rugam scrieti prenumele complet" class="txtbox" size="100%" required /></td>
-     </tr>
-     <tr>
-      <td>Nr. matricol</td>
-      <td><input type="text" name="nrMatricol" placeholder="Va rugam scrieti numarul matricol" class="txtbox" size="100%" required /></td>
-     </tr>
-     <tr>
-      <td>Indrumator</td>
-      <td>#select( "indrumator" "Alex Moruz" $profslist )</td>
+      <td>Descriere</td>
+      <td><input type="file" name="descriere" required></td>
      </tr>
      <tr>
       <td>Adeverinta</td>
       <td><input type="file" name="adeverinta" required></td>
      </tr>
+     <tr>
+      <td>Declaratie</td>
+      <td><input type="file" name="declaratie" required></td>
+     </tr>
+     <tr>
+      <td>Acord</td>
+      <td><input type="file" name="acord" required></td>
+     </tr>
     </div>
-    <span class="buttonwrapper"><input type="submit" value="trimite" class="button"/></span>
+    <div style="text-align:center;" ><input style="width:15%;height:10%;" type="submit" value="Trimite" class="button"/></div>
    </table>
   </div>
  </form>
-{{/html}}
+ {{/html}}
 
 #*
   Daca a fost apasat butonul de submit

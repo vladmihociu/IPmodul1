@@ -1,37 +1,50 @@
 {{velocity}}
 
-#macro( select $name $displayname $choicelist )
-  <SELECT name=$name>
-    <option value="">$displayname</option>
-    #foreach( $choice in $choicelist )
-      <option value=$choice>$choice</option>
-    #end
-  </select>
-#end
-
-#if("$!request.nume" != '')
-  ## Request for creating a new instance
-  #set($targetDocReference = $services.model.createDocumentReference('', $!{request.spaceName}, $!{request.nume}))
-  $response.sendRedirect($xwiki.getURL($targetDocReference, 'inline', "template=${escapetool.url($request.template)}&parent=${escapetool.url($request.parent)}"))
-  ## Stop processing, since we already sent a redirect.
-  #stop
-#end
-
 ## This will only be visible to users that have super admin rights on this document
- = Formular de inscriere =
  {{html}}
-   <table border = "0">
+ <h1 style="text-align:center;"><b> Formular de inscriere </b></h1>
+ <br/>
+
+   <table>
      <tr>
-       <td>Nume</td>
-       <td>$user.getNume()</td>
+         <td>Nume</td>
+         <td>$user.getNume()</td>
      </tr>
      <tr>
-       <td>Prenume</td>
-       <td>$user.getPrenume()</td>
+         <td>Prenume</td>
+         <td>$user.getPrenume()</td>
      </tr>
      <tr>
-       <td>Nr. matricol</td>
-       <td>$user.getNrMatricol()</td>
+         <td>Nr. matricol</td>
+         <td>$user.getNrMatricol()</td>
+     </tr>
+     <tr>
+         <td>Email</td>
+         <td>$user.getEmail()</td>
+     </tr>
+     <tr>
+         <td>Nume licenta</td>
+         <td>$user.getNumeLicenta()</td>
+     </tr>
+     <tr>
+         <td>Link extern catre cod</td>
+         <td>$user.getLink()</td>
+     </tr>
+     <tr>
+         <td>Indrumator</td>
+         <td>$user.getIndrumator()</td>
+     </tr>
+     <tr>
+         <td>Prima materie</td>
+         <td>$user.getMaterie1()</td>
+     </tr>
+     <tr>
+         <td>A doua materie</td>
+         <td>$user.getMaterie2()</td>
+     </tr>
+     <tr>
+         <td>Data examenului</td>
+         <td>$user.getDataExamen()</td>
      </tr>
    </table>
 {{/html}}

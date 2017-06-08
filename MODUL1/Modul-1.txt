@@ -1,0 +1,230 @@
+///////////////////////////////////////////////////////////////////////cautare pagini superadmin (ProiectIPModul1v1)
+http://localhost:8085/xwiki/bin/view/ProiectIPModul1v1/
+
+{{velocity}}
+  
+#if("$!request.Nume" == '-')      
+  
+  = Rezultate gasite =    
+  #set($xwql = "from doc.object(XWiki.ProiectIPModul1v1Class) as form where doc.fullName <> 'XWiki.ProiectIPModul1v1Template'")
+  #set($results = $services.query.xwql($xwql).execute())
+  #if($results.empty)
+    Nu a fost gasit nici un formular!
+  #else
+    #foreach ($item in $results)
+      #set($form = $xwiki.getDocument($item))
+      * [[${form.display("Nume").replace("<p>", "").replace("</p>", "")} ${form.display("Prenume").replace("<p>", "").replace("     </p>", "")}>>${item}]]
+    #end
+  #end
+#elseif ("$!request.Nume" != '')  
+
+  {{html}}
+  <form action="" id="newdoc" method="post">
+    <div>
+      Nume: <input type="text" name="Nume" value="Inserati un nume ..." class="withTip" size="50"/>
+      <span class="buttonwrapper"><input type="submit" value="Cauta" class="button"/></span>
+    </div>
+  </form>
+  {{/html}}
+
+  = Rezultate gasite = 
+  #set($xwql = "from doc.object(XWiki.ProiectIPModul1v1Class) as form where doc.fullName <> 'XWiki.ProiectIPModul1v1Template' and doc.object(XWiki.ProiectIPModul1v1Class).Nume like '%$!request.Nume%'")
+  #set($results = $services.query.xwql($xwql).execute())
+  #if($results.empty)
+    Nu a fost creat nici un formular!
+  #else
+    #foreach ($item in $results)
+      #set($form = $xwiki.getDocument($item))
+      #set($form = $xwiki.getDocument($item))
+      * [[${form.display("Nume").replace("<p>", "").replace("</p>", "")} ${form.display("Prenume").replace("<p>", "").replace("     </p>", "")}>>${item}]]
+    #end
+  #end
+#else 
+
+{{html}}
+  <form action="" id="newdoc" method="post">
+    <div>
+      Nume: <input type="text" name="Nume" value="Inserati un nume ..." class="withTip" size="50"/>
+      <span class="buttonwrapper"><input type="submit" value="Cauta" class="button"/></span>
+    </div>
+  </form>
+{{/html}}
+
+= Toate rezultatele =    
+  #set($xwql = "from doc.object(XWiki.ProiectIPModul1v1Class) as form where doc.fullName <> 'XWiki.ProiectIPModul1v1Template'")
+  #set($results = $services.query.xwql($xwql).execute())
+  #if($results.empty)
+    Nu a fost creat nici un formular!
+  #else
+    #foreach ($item in $results)
+      #set($form = $xwiki.getDocument($item))
+      * [[${form.display("Nume").replace("<p>", "").replace("</p>", "")} ${form.display("Prenume").replace("<p>", "").replace("     </p>", "")}>>${item}]]
+    #end
+  #end
+#end
+{{/velocity}}
+
+
+//////////////////////////////////////////////////////////////////////////// creat pagini noi prin buton (Pagina cu buton de add form)
+http://localhost:8085/xwiki/bin/view/Sandbox/TestPage2
+
+{{velocity}}
+
+#if("$!request.parent" != '')
+  #set( $docName = "Formular"+ $xcontext.getUser().replace("XWiki.", ""))
+
+  ## Request for creating a new instance
+  #set($targetDocName = "XWiki.${docName}")
+  #if(!$xwiki.exists($targetDocName) && $xwiki.hasAccessLevel('edit', $xcontext.user, $targetDocName))
+    $response.sendRedirect($xwiki.getURL($targetDocName, 'edit', "template=ProiectIPModul1v1Template&parent=ProiectIPModul1v1"))
+    ## Stop processing, since we already sent a redirect.
+    #stop
+  #end
+
+  #if("$!targetDocName" != '' && $xwiki.exists($targetDocName))
+    redirect catre $targetDocName
+    #set( $url = "http://localhost:8085/xwiki/bin/view/XWiki/" + $docName)
+    $response.sendRedirect($url)
+
+  #elseif("$!targetDocName" != '')
+    {{warning}}You don't have permission to create that document{{/warning}}
+  #end
+
+#else
+{{html}}
+  <form action="" id="newdoc" method="post">
+    <div>
+      <h2>Buna ziua, $xcontext.getUser().replace("XWiki.", "").</h2>
+      <h2>Mult noroc la examenul de licenta!</h2><br>
+
+      <input type="hidden" name="parent" value="ProiectIPModul1v1"/>
+      <input type="hidden" name="template" value="ProiectIPModul1v1TemplateProvider"/>
+      <input type="hidden" name="sheet" value="1"/>
+      <input type="hidden" name="spaceName" value="ProiectIPModul1v1"/>
+      <span class="buttonwrapper"><input type="submit" value="Access the license application form" class="button"/></span>
+    </div>
+  </form>
+{{/html}}
+#end
+{{/velocity}}
+
+///////////////////////////////////////////////////////////////// clasa principala ProiectIPModul1v1 Class
+http://79.112.68.66:8085/xwiki/bin/XWiki/ProiectIPModul1v1Class
+
+{{velocity}}
+## Replace the default space with the space where you want your documents to be created.
+## Replace the default parent with the one of your choice and save the document.
+##
+#set ($defaultSpace = 'ProiectIPModul1v1')
+#set ($defaultParent = 'ProiectIPModul1v1.WebHome')
+
+{{/velocity}}
+
+//////////////////////////////////////////////////////////////////clasa principala sheet
+http://79.112.68.66:8085/xwiki/bin/view/XWiki/ProiectIPModul1v1Sheet
+
+{{velocity}}
+#if("$!request.validate" != '')
+   #set( $docName = "Formular"+ $xcontext.getUser().replace("XWiki.", ""))
+   #set( $url = "http://localhost:8085/xwiki/bin/edit/XWiki/" + $docName)
+   $response.sendRedirect($url)
+#end
+
+#if("$!request.submit" != '')
+   #if($doc.validate() == false)
+      {{html wiki="true"}}
+        <h2 style="text-align:center;">Unele campuri sunt invalide !</h2>
+        <form action="" id="newdoc3" method="post">
+        <input type="hidden" name="validate" value="ProiectIPModul1v1"/>
+        <input type="hidden" name="xvalidate" value="1" />
+        <div style="margin:0 auto;width:35%;">
+        <input  onmouseover="this.style.background='white';this.style.color='black';" onmouseout="this.style.background='#006cb1';this.style.color='white';" 
+        style="background:#006cb1;
+        border-radius: 50px;
+        font-family: Arial;
+        color: white;
+        font-size: 150%;
+        border:hidden;
+        display:block;
+        margin:0 auto;
+        border:1px solid lightblue;
+        width:35%;"  type="submit" onclick="" value="Inapoi"/>
+        </div>
+        </form>
+      {{/html}}
+      #stop
+   #end
+   $doc.save()
+#end
+
+#if("$!request.edit" != '')
+   #set( $docName = "Formular"+ $xcontext.getUser().replace("XWiki.", ""))
+   #set( $url = "http://localhost:8085/xwiki/bin/edit/XWiki/" + $docName)
+   $response.sendRedirect($url)
+#end
+
+{{html wiki="true"}}
+
+<div style="padding:1%; box-sizing:border-box; border-radius:15px; border-style: double; border-color:lightblue; border-width:2.5px; background-color:steelblue;"> 
+<div style="padding:2%;font-family: Arial;text-align:center;color:white;font-size:250%">Formular pentru inscriere licenta</div>
+<br>
+<div style="padding:1%;">
+
+#set($class = $doc.getObject('XWiki.ProiectIPModul1v1Class').xWikiClass)
+<div style="border-radius:5%;background:lightgray;margin:0 auto;padding:1%;width:35%;">
+
+#foreach($prop in $class.properties)
+  #if($prop.prettyName=="Nume Licenta")
+   </div><span style="margin:1% 0;display:block;width:100%;border-top:1px solid lightblue;"></span><div style="font-family: Arial;border-radius:5%;background:lightgray;margin:0 auto;padding:1%;width:35%;">
+  #end
+  <div style="font-weight:bold"> $prop.prettyName </div>
+  <div> $doc.display($prop.getName()) </div>
+#end
+</div>
+<br>
+</div>
+
+<form action="" id="newdoc" method="post">
+<input type="hidden" name="submit" value="ProiectIPModul1v1"/>
+<input type="hidden" name="xvalidate" value="1" />
+<div style="margin:0 auto;width:35%;">
+<input  onmouseover="this.style.background='white';this.style.color='black';" onmouseout="this.style.background='#006cb1';this.style.color='white';" 
+style="background:#006cb1;
+  border-radius: 50px;
+  font-family: Arial;
+  color: white;
+  font-size: 150%;
+  border:hidden;
+  display:block;
+  margin:0 auto;
+  border:1px solid lightblue;
+  width:35%;"  type="submit" onclick="" value="Submit"/>
+</div>
+</form>
+
+<form action="" id="newdoc2" method="post">
+<input type="hidden" name="edit" value="ProiectIPModul1v1"/>
+<input type="hidden" name="xvalidate" value="1" />
+<div style="margin:0 auto;width:35%;">
+<input  onmouseover="this.style.background='white';this.style.color='black';" onmouseout="this.style.background='#006cb1';this.style.color='white';" 
+style="background:#006cb1;
+  border-radius: 50px;
+  font-family: Arial;
+  color: white;
+  font-size: 150%;
+  border:hidden;
+  display:block;
+  margin:0 auto;
+  border:1px solid lightblue;
+  width:35%;"  type="submit" onclick="" value="Edit"/>
+</div>
+</form>
+
+</div>
+{{/html}}
+{{/velocity}}
+
+
+//Nr matricol  00000000SL000000
+
+
